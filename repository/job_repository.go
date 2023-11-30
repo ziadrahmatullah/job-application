@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/apperror"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/dto"
@@ -57,6 +58,9 @@ func (j *jobRepository) NewJob(ctx context.Context, job model.Job) (newJob *mode
 
 func (j *jobRepository) SetJobExpireDate(ctx context.Context, job dto.UpdateJobReq) (updatedJob *model.Job, err error) {
 	expiredAt := util.ToDate(job.ExpiredAt)
+	if expiredAt.Before(time.Now()){
+		return nil, apperror.ErrInvalidExpireDate
+	}
 	result := j.db.WithContext(ctx).Table("jobs").Where("id = ?", job.ID).Update("expired_at", expiredAt).Scan(&updatedJob)
 	if result.Error != nil {
 		return nil, apperror.ErrNewUserQuery
@@ -67,7 +71,7 @@ func (j *jobRepository) SetJobExpireDate(ctx context.Context, job dto.UpdateJobR
 	return updatedJob, nil
 }
 
-func (j *jobRepository) CloseJob(ctx context.Context, job dto.DeleteJobReq) (err error) {
+func (j *jobRepository) CloseJob(ctx context.Context, job dto.DeleteJobReq) error {
 	result := j.db.WithContext(ctx).Table("jobs").Where("id = ?", job.ID).Delete(&model.Job{})
 	if result.Error != nil {
 		return apperror.ErrRemoveJobQuery

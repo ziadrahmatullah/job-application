@@ -46,9 +46,10 @@ var (
 	ErrUpdateJobExpireDateQuery = NewCustomError(http.StatusInternalServerError, "set job expire date query error")
 	ErrRemoveJobQuery           = NewCustomError(http.StatusInternalServerError, "remove job query error")
 
+	ErrInvalidExpireDate    = NewCustomError(http.StatusBadRequest, "invalid expire date")
 	ErrJobNotFound          = NewCustomError(http.StatusBadRequest, "job not found")
 	ErrJobQuotaHasFulfilled = NewCustomError(http.StatusBadRequest, "job quota has fulfilled")
-	ErrAlreadyApplied = NewCustomError(http.StatusBadRequest, "already apply this job")
+	ErrAlreadyApplied       = NewCustomError(http.StatusBadRequest, "already apply this job")
 
 	ErrFindRecordsQuery = NewCustomError(http.StatusInternalServerError, "find records query error")
 	ErrFindRecordQuery  = NewCustomError(http.StatusInternalServerError, "find record query error")
@@ -60,6 +61,6 @@ var (
 
 	ErrTxCommit = NewCustomError(http.StatusInternalServerError, "commit transaction error")
 
-	ErrInvalidBody  = NewCustomError(http.StatusBadRequest, "invalid body")
+	ErrInvalidBody = NewCustomError(http.StatusBadRequest, "invalid body")
 	ErrUnauthorize = NewCustomError(http.StatusUnauthorized, "unauthorized")
 )
