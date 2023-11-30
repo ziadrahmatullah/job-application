@@ -1,35 +1,41 @@
 package server
 
-// import "github.com/gin-gonic/gin"
+import (
+	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/handler"
+	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/logger"
+	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/middleware"
+	"github.com/gin-gonic/gin"
+)
 
-// type RouterOpts struct {
-// 	BookHandler   *handler.BookHandler
-// 	UserHandler   *handler.UserHandler
-// 	BorrowHandler *handler.BorrowHandler
-// }
+type RouterOpts struct {
+	JobHandler     *handler.JobHandler
+	UserHandler    *handler.UserHandler
+	ApplyJobHanler *handler.ApplyJobHanler
+}
 
-// func NewRouter(opts RouterOpts) *gin.Engine {
-// 	router := gin.New()
-// 	router.ContextWithFallback = true
+func NewRouter(opts RouterOpts) *gin.Engine {
+	router := gin.New()
+	router.ContextWithFallback = true
 
-// 	router.Use(gin.Recovery())
-// 	router.Use(middleware.WithTimeout)
-// 	router.Use(middleware.AuthorizeHandler())
-// 	router.Use(middleware.ErrorHandler())
-// 	router.Use(middleware.Logger(logger.NewLogger()))
+	router.Use(gin.Recovery())
+	router.Use(middleware.WithTimeout)
+	router.Use(middleware.AuthorizeHandler())
+	router.Use(middleware.ErrorHandler())
+	router.Use(middleware.Logger(logger.NewLogger()))
 
-// 	books := router.Group("/books")
-// 	books.GET("", opts.BookHandler.HandleGetBooks)
-// 	books.POST("", opts.BookHandler.HandleCreateBook)
+	jobs := router.Group("/jobs")
+	jobs.GET("", opts.JobHandler.HandleGetAllJobs)
+	jobs.POST("", opts.JobHandler.HandleCreateJob)
+	jobs.PUT("", opts.JobHandler.HandleUpdateJobExpireDate)
+	jobs.DELETE("", opts.JobHandler.HandleDeleteJob)
 
-// 	users := router.Group("/users")
-// 	users.GET("", opts.UserHandler.HandleGetUsers)
-// 	users.POST("/register", opts.UserHandler.HandleUserRegister)
-// 	users.POST("/login", opts.UserHandler.HandleUserLogin)
+	users := router.Group("/users")
+	users.GET("", opts.UserHandler.HandleGetUsers)
+	users.POST("/register", opts.UserHandler.HandleUserRegister)
+	users.POST("/login", opts.UserHandler.HandleUserLogin)
 
-// 	borrow := router.Group("/borrows")
-// 	borrow.GET("", opts.BorrowHandler.HandleGetRecords)
-// 	borrow.POST("", opts.BorrowHandler.HandleBorrowBook)
-// 	borrow.PUT("", opts.BorrowHandler.HandleReturnBook)
-// 	return router
-// }
+	applyjobs := router.Group("/applyjobs")
+	applyjobs.GET("", opts.ApplyJobHanler.HandleGetAllRecords)
+	applyjobs.POST("", opts.ApplyJobHanler.HandleCreateApplyJob)
+	return router
+}

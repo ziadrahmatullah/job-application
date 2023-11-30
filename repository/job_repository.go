@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"time"
 
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/apperror"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/dto"
@@ -16,7 +15,7 @@ type JobRepository interface {
 	FindJobById(context.Context, uint) (*model.Job, error)
 	NewJob(context.Context, model.Job) (*model.Job, error)
 	SetJobExpireDate(context.Context, dto.UpdateJobReq) (*model.Job, error)
-	CloseJob(context.Context, dto.DeleteJobReq) (*model.Job, error)
+	CloseJob(context.Context, dto.DeleteJobReq) error
 }
 
 type jobRepository struct {
@@ -51,7 +50,7 @@ func (j *jobRepository) FindJobById(ctx context.Context, id uint) (job *model.Jo
 func (j *jobRepository) NewJob(ctx context.Context, job model.Job) (newJob *model.Job, err error) {
 	err = j.db.WithContext(ctx).Table("jobs").Create(&job).Error
 	if err != nil {
-		return nil, apperror.ErrNewUserQuery
+		return nil, apperror.ErrNewJobQuery
 	}
 	return &job, nil
 }
@@ -68,13 +67,13 @@ func (j *jobRepository) SetJobExpireDate(ctx context.Context, job dto.UpdateJobR
 	return updatedJob, nil
 }
 
-func (j *jobRepository) CloseJob(ctx context.Context, job dto.DeleteJobReq) (deletedJob *model.Job, err error) {
-	result := j.db.WithContext(ctx).Table("jobs").Where("id = ? AND deleted_at = NULL", job.ID).Update("deleted_at = ?", time.Now()).Scan(&deletedJob)
+func (j *jobRepository) CloseJob(ctx context.Context, job dto.DeleteJobReq) (err error) {
+	result := j.db.WithContext(ctx).Table("jobs").Where("id = ?", job.ID).Delete(&model.Job{})
 	if result.Error != nil {
-		return nil, apperror.ErrRemoveJobQuery
+		return apperror.ErrRemoveJobQuery
 	}
 	if result.RowsAffected == 0 {
-		return nil, apperror.ErrJobNotFound
+		return apperror.ErrJobNotFound
 	}
-	return deletedJob, nil
+	return nil
 }

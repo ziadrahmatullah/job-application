@@ -39,8 +39,10 @@ func (r *RegisterReq) ToUserModelRegister(password string) model.User {
 
 func ToRegisterRes(user model.User) *RegisterRes {
 	return &RegisterRes{
-		ID:    user.ID,
-		Name:  user.Name,
-		Email: user.Email,
+		ID:         user.ID,
+		Name:       user.Name,
+		CurrentJob: user.CurrentJob,
+		Age:        user.Age,
+		Email:      user.Email,
 	}
 }

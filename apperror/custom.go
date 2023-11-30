@@ -48,6 +48,7 @@ var (
 
 	ErrJobNotFound          = NewCustomError(http.StatusBadRequest, "job not found")
 	ErrJobQuotaHasFulfilled = NewCustomError(http.StatusBadRequest, "job quota has fulfilled")
+	ErrAlreadyApplied = NewCustomError(http.StatusBadRequest, "already apply this job")
 
 	ErrFindRecordsQuery = NewCustomError(http.StatusInternalServerError, "find records query error")
 	ErrFindRecordQuery  = NewCustomError(http.StatusInternalServerError, "find record query error")

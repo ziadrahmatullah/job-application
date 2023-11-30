@@ -19,14 +19,14 @@ type applyJobRepository struct {
 	db *gorm.DB
 }
 
-func NewApplyJobRepository(db *gorm.DB) ApplyJobRepository{
+func NewApplyJobRepository(db *gorm.DB) ApplyJobRepository {
 	return &applyJobRepository{
-		db:db,
+		db: db,
 	}
 }
 
 func (a *applyJobRepository) FindRecords(ctx context.Context) (records []model.ApplyJob, err error) {
-	err = a.db.WithContext(ctx).Table("apply_jobs").Find(&records).Error
+	err = a.db.WithContext(ctx).Preload("User").Preload("Job").Table("apply_jobs").Find(&records).Error
 	if err != nil {
 		return nil, apperror.ErrFindRecordsQuery
 	}
@@ -62,5 +62,3 @@ func (a *applyJobRepository) NewApplyJob(ctx context.Context, record model.Apply
 	}
 	return &record, nil
 }
-
-

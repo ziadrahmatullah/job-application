@@ -33,7 +33,7 @@ func (h *ApplyJobHanler) HandleGetAllRecords(ctx *gin.Context) {
 func (h *ApplyJobHanler) HandleCreateApplyJob(ctx *gin.Context) {
 	resp := dto.Response{}
 	newApplyJob := dto.ApplyJobReq{}
-	err := ctx.ShouldBindJSON(newApplyJob)
+	err := ctx.ShouldBindJSON(&newApplyJob)
 	if err != nil {
 		ctx.Error(apperror.ErrInvalidBody)
 		return

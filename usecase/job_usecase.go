@@ -12,7 +12,7 @@ type JobUsecase interface {
 	GetAllJobs(context.Context) ([]model.Job, error)
 	CreateJob(context.Context, model.Job) (*model.Job, error)
 	UpdateJobExpireDate(context.Context, dto.UpdateJobReq) (*model.Job, error)
-	DeleteJob(context.Context, dto.DeleteJobReq) (*model.Job, error)
+	DeleteJob(context.Context, dto.DeleteJobReq) error
 }
 
 type jobUsecase struct {
@@ -37,6 +37,6 @@ func (j *jobUsecase) UpdateJobExpireDate(ctx context.Context, job dto.UpdateJobR
 	return j.jobRepository.SetJobExpireDate(ctx, job)
 }
 
-func (j *jobUsecase) DeleteJob(ctx context.Context, job dto.DeleteJobReq) (*model.Job, error) {
+func (j *jobUsecase) DeleteJob(ctx context.Context, job dto.DeleteJobReq) error {
 	return j.jobRepository.CloseJob(ctx, job)
 }

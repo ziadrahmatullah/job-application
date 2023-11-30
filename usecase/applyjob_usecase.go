@@ -32,6 +32,10 @@ func (a *applyJobUsecase) GetAllRecords(ctx context.Context) ([]model.ApplyJob, 
 }
 
 func (a *applyJobUsecase) CreateApplyJob(ctx context.Context, record model.ApplyJob) (*model.ApplyJob, error) {
+	rec, _ := a.applyJobRepository.FindRecord(ctx, record)
+	if rec != nil{
+		return nil, apperror.ErrAlreadyApplied
+	}
 	_, err := a.userRepository.FindUserById(ctx, record.UserId)
 	if err != nil {
 		return nil, err

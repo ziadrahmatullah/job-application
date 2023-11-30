@@ -30,7 +30,11 @@ func Logger(log logger.Logger) gin.HandlerFunc {
 			}
 
 			if len(errList) > 0 {
-				param["errors"] = errList
+				errorList := ""
+				for _, err:= range errList{
+					errorList += err.Error()
+				}
+				param["errors"] = errorList
 				log.Errorf("Error", param)
 			}
 		}

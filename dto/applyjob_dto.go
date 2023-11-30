@@ -27,7 +27,7 @@ type ApplyJobRes struct {
 
 func ToApplyJobRes(record model.ApplyJob) *ApplyJobRes {
 	return &ApplyJobRes{
-		JobId:     record.ID,
+		JobId:     record.JobId,
 		Status:    "Applied",
 		Message:   "Application success",
 		AppliedAt: record.AppliedAt.String(),

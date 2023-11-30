@@ -14,7 +14,7 @@ type JwtClaims struct {
 }
 
 func GenerateJWT(claims JwtClaims) (string, error) {
-	claims.Issuer = "authToken"
+	claims.Issuer = os.Getenv("APP_NAME")
 	claims.IssuedAt = jwt.NewNumericDate(time.Now())
 	claims.ExpiresAt = jwt.NewNumericDate(time.Now().Add(1 * time.Hour))
 
