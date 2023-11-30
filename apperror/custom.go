@@ -58,4 +58,6 @@ var (
 	ErrGenerateJWTToken     = NewCustomError(http.StatusInternalServerError, "can't generate jwt token")
 
 	ErrTxCommit = NewCustomError(http.StatusInternalServerError, "commit transaction error")
+
+	ErrInvalidBody = NewCustomError(http.StatusBadRequest, "invalid body")
 )
