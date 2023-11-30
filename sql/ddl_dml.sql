@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users(
     age int NOT NULL,
     created_at timestamp NOT NULL,
     updated_at timestamp NOT NULL,
-    deleted_at timestamp NOT NULL,
+    deleted_at timestamp,
     PRIMARY KEY(id)
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS jobs(
     quota int,
     created_at timestamp NOT NULL,
     updated_at timestamp NOT NULL,
-    deleted_at timestamp NOT NULL,
+    deleted_at timestamp,
     PRIMARY KEY(id)
 );
 
@@ -29,8 +29,18 @@ CREATE TABLE IF NOT EXISTS job_applies(
     aplied_at timestamp NOT NULL,
     created_at timestamp NOT NULL,
     updated_at timestamp NOT NULL,
-    deleted_at timestamp NOT NULL,
+    deleted_at timestamp,
     PRIMARY KEY(id),
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (job_id) REFERENCES jobs(id),
+    FOREIGN KEY (job_id) REFERENCES jobs(id)
 );
+
+INSERT INTO users (name, current_job, age, created_at, updated_at)
+VALUES
+('Alice', 'Job Researcher', 18, NOW(), NOW()),
+('Bob', 'Job Researcher', 18, NOW(), NOW());
+
+INSERT INTO jobs(name, company, quota, created_at, updated_at)
+VALUES
+('Backend Developer', 'Shopee', 2, NOW(), NOW()),
+('Frontend Developer', 'Shopee', 2, NOW(), NOW());
