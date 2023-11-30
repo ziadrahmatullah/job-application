@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/apperror"
+	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/dto"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/model"
 	"gorm.io/gorm"
 )
@@ -13,8 +14,8 @@ type JobRepository interface {
 	FindJobs(context.Context) ([]model.Job, error)
 	FindJobById(context.Context, uint) (*model.Job, error)
 	NewJob(context.Context, model.Job) (*model.Job, error)
-	SetJobExpireDate(context.Context, model.Job) (*model.Job, error)
-	CloseJob(context.Context, model.Job) (*model.Job, error)
+	SetJobExpireDate(context.Context, dto.UpdateJobReq) (*model.Job, error)
+	CloseJob(context.Context, dto.DeleteJobReq) (*model.Job, error)
 }
 
 type jobRepository struct {
@@ -54,8 +55,8 @@ func (j *jobRepository) NewJob(ctx context.Context, job model.Job) (newJob *mode
 	return &job, nil
 }
 
-func (j *jobRepository) SetJobExpireDate(ctx context.Context, job model.Job) (updatedJob *model.Job, err error) {
-	result := j.db.WithContext(ctx).Table("jobs").Where("id = ?", job.ID).Update("expired_at", job.ExpireAt).Scan(&updatedJob)
+func (j *jobRepository) SetJobExpireDate(ctx context.Context, job dto.UpdateJobReq) (updatedJob *model.Job, err error) {
+	result := j.db.WithContext(ctx).Table("jobs").Where("id = ?", job.ID).Update("expired_at", job.ExpiredAt).Scan(&updatedJob)
 	if result.Error != nil {
 		return nil, apperror.ErrNewUserQuery
 	}
@@ -65,7 +66,7 @@ func (j *jobRepository) SetJobExpireDate(ctx context.Context, job model.Job) (up
 	return updatedJob, nil
 }
 
-func (j *jobRepository) CloseJob(ctx context.Context, job model.Job) (deletedJob *model.Job, err error) {
+func (j *jobRepository) CloseJob(ctx context.Context, job dto.DeleteJobReq) (deletedJob *model.Job, err error) {
 	result := j.db.WithContext(ctx).Table("jobs").Where("id = ? AND deleted_at = NULL", job.ID).Update("deleted_at = ?", time.Now()).Scan(&deletedJob)
 	if result.Error != nil {
 		return nil, apperror.ErrRemoveJobQuery

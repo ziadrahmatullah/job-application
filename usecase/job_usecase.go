@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 
+	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/dto"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/model"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/repository"
 )
@@ -10,8 +11,8 @@ import (
 type JobUsecase interface {
 	GetAllJobs(context.Context) ([]model.Job, error)
 	CreateJob(context.Context, model.Job) (*model.Job, error)
-	UpdateJobExpireDate(context.Context, model.Job) (*model.Job, error)
-	DeleteJob(context.Context, model.Job) (*model.Job, error)
+	UpdateJobExpireDate(context.Context, dto.UpdateJobReq) (*model.Job, error)
+	DeleteJob(context.Context, dto.DeleteJobReq) (*model.Job, error)
 }
 
 type jobUsecase struct {
@@ -32,10 +33,10 @@ func (j *jobUsecase) CreateJob(ctx context.Context, job model.Job) (*model.Job, 
 	return j.jobRepository.NewJob(ctx, job)
 }
 
-func (j *jobUsecase) UpdateJobExpireDate(ctx context.Context, job model.Job) (*model.Job, error) {
+func (j *jobUsecase) UpdateJobExpireDate(ctx context.Context, job dto.UpdateJobReq) (*model.Job, error) {
 	return j.jobRepository.SetJobExpireDate(ctx, job)
 }
 
-func (j *jobUsecase) DeleteJob(ctx context.Context, job model.Job) (*model.Job, error) {
+func (j *jobUsecase) DeleteJob(ctx context.Context, job dto.DeleteJobReq) (*model.Job, error) {
 	return j.jobRepository.CloseJob(ctx, job)
 }

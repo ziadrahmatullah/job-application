@@ -11,5 +11,5 @@ type Job struct {
 	Name     string    `gorm:"not null"`
 	Company  string    `gorm:"not null"`
 	Quota    int       `gorm:"not null"`
-	ExpireAt time.Time `gorm:"not null"`
+	ExpiredAt time.Time `gorm:"not null"`
 }
