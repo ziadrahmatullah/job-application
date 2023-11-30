@@ -47,4 +47,10 @@ var (
 	ErrJobNotFound = NewCustomError(http.StatusBadRequest, "job not found")
 
 	ErrFindRecordsQuery = NewCustomError(http.StatusInternalServerError, "find records query error")
+	ErrFindRecordQuery  = NewCustomError(http.StatusInternalServerError, "find record query error")
+
+	ErrRecordNotFound = NewCustomError(http.StatusBadRequest, "record not found")
+
+	ErrTxCommit    = NewCustomError(http.StatusInternalServerError, "commit transaction error")
+
 )

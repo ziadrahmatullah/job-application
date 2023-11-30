@@ -14,7 +14,7 @@ type JobRepository interface {
 	FindJobById(context.Context, uint) (*model.Job, error)
 	NewJob(context.Context, model.Job) (*model.Job, error)
 	SetJobExpireDate(context.Context, model.Job) (*model.Job, error)
-	RemoveJob(context.Context, model.Job) (*model.Job, error)
+	CloseJob(context.Context, model.Job) (*model.Job, error)
 }
 
 type jobRepository struct {
@@ -62,7 +62,7 @@ func (j *jobRepository) SetJobExpireDate(ctx context.Context, job model.Job) (up
 	return updatedJob, nil
 }
 
-func (j *jobRepository) RemoveJob(ctx context.Context, job model.Job) (deletedJob *model.Job, err error) {
+func (j *jobRepository) CloseJob(ctx context.Context, job model.Job) (deletedJob *model.Job, err error) {
 	result := j.db.WithContext(ctx).Table("jobs").Where("id = ? AND deleted_at = NULL", job.ID).Update("deleted_at = ?", time.Now()).Scan(&deletedJob)
 	if result.Error != nil {
 		return nil, apperror.ErrRemoveJobQuery
