@@ -36,7 +36,9 @@ var (
 	ErrFindUserByEmail   = NewCustomError(http.StatusInternalServerError, "find user by email query error")
 	ErrNewUserQuery      = NewCustomError(http.StatusInternalServerError, "new user query error")
 
-	ErrUserNotFound = NewCustomError(http.StatusBadRequest, "user not found")
+	ErrUserNotFound           = NewCustomError(http.StatusBadRequest, "user not found")
+	ErrEmailALreadyUsed       = NewCustomError(http.StatusBadRequest, "email already used")
+	ErrInvalidPasswordOrEmail = NewCustomError(http.StatusBadRequest, "invalid password or email")
 
 	ErrFindJobsQuery            = NewCustomError(http.StatusInternalServerError, "find jobs query error")
 	ErrFindJobByIdQuery         = NewCustomError(http.StatusInternalServerError, "find job by id query error")
@@ -51,6 +53,8 @@ var (
 
 	ErrRecordNotFound = NewCustomError(http.StatusBadRequest, "record not found")
 
-	ErrTxCommit    = NewCustomError(http.StatusInternalServerError, "commit transaction error")
+	ErrGenerateHashPassword = NewCustomError(http.StatusInternalServerError, "couldn't generate hash password")
+	ErrGenerateJWTToken     = NewCustomError(http.StatusInternalServerError, "can't generate jwt token")
 
+	ErrTxCommit = NewCustomError(http.StatusInternalServerError, "commit transaction error")
 )

@@ -62,3 +62,5 @@ func (a *applyJobRepository) NewApplyJob(ctx context.Context, record model.Apply
 	}
 	return &record, nil
 }
+
+
