@@ -46,7 +46,8 @@ var (
 	ErrUpdateJobExpireDateQuery = NewCustomError(http.StatusInternalServerError, "set job expire date query error")
 	ErrRemoveJobQuery           = NewCustomError(http.StatusInternalServerError, "remove job query error")
 
-	ErrJobNotFound = NewCustomError(http.StatusBadRequest, "job not found")
+	ErrJobNotFound          = NewCustomError(http.StatusBadRequest, "job not found")
+	ErrJobQuotaHasFulfilled = NewCustomError(http.StatusBadRequest, "job quota has fulfilled")
 
 	ErrFindRecordsQuery = NewCustomError(http.StatusInternalServerError, "find records query error")
 	ErrFindRecordQuery  = NewCustomError(http.StatusInternalServerError, "find record query error")
