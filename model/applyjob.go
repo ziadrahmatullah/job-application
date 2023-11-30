@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type JobApply struct {
+type ApplyJob struct {
 	gorm.Model
 	UserId    uint      `gorm:"not null" json:"user_id"`
 	JobId     uint      `gorm:"not null" json:"job_id"`

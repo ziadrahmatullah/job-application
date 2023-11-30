@@ -30,13 +30,21 @@ func (ce *CustomError) ToErrorRes() ErrorRes {
 	}
 }
 
-var(
+var (
 	ErrFindUsersQuery    = NewCustomError(http.StatusInternalServerError, "find user query error")
 	ErrFindUserByIdQuery = NewCustomError(http.StatusInternalServerError, "find user by id query error")
-	ErrFindUserByName    = NewCustomError(http.StatusInternalServerError, "find user by name query error")
 	ErrFindUserByEmail   = NewCustomError(http.StatusInternalServerError, "find user by email query error")
 	ErrNewUserQuery      = NewCustomError(http.StatusInternalServerError, "new user query error")
 
-	ErrUserNotFound     = NewCustomError(http.StatusBadRequest, "user not found")
-	ErrEmailNotFound    = NewCustomError(http.StatusBadRequest, "email not found")
+	ErrUserNotFound = NewCustomError(http.StatusBadRequest, "user not found")
+
+	ErrFindJobsQuery            = NewCustomError(http.StatusInternalServerError, "find jobs query error")
+	ErrFindJobByIdQuery         = NewCustomError(http.StatusInternalServerError, "find job by id query error")
+	ErrNewJobQuery              = NewCustomError(http.StatusInternalServerError, "new job query error")
+	ErrUpdateJobExpireDateQuery = NewCustomError(http.StatusInternalServerError, "set job expire date query error")
+	ErrRemoveJobQuery           = NewCustomError(http.StatusInternalServerError, "remove job query error")
+
+	ErrJobNotFound = NewCustomError(http.StatusBadRequest, "job not found")
+
+	ErrFindRecordsQuery = NewCustomError(http.StatusInternalServerError, "find records query error")
 )

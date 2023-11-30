@@ -19,6 +19,13 @@ type userRepository struct{
 	db *gorm.DB
 }
 
+
+func NewUserRepository(db *gorm.DB) UserRepository {
+	return &userRepository{
+		db: db,
+	}
+}
+
 func (u *userRepository) FindUsers(ctx context.Context) (users []model.User, err error) {
 	err = u.db.WithContext(ctx).Table("users").Find(&users).Error
 	if err != nil {

@@ -18,13 +18,14 @@ CREATE TABLE IF NOT EXISTS jobs(
     name varchar NOT NUll,
     company varchar NOT NULL,
     quota int NOT NULL CHECK (quota > 0),
+    expired_at timestamp NOT NULL,
     created_at timestamp NOT NULL,
     updated_at timestamp NOT NULL,
     deleted_at timestamp,
     PRIMARY KEY(id)
 );
 
-CREATE TABLE IF NOT EXISTS job_applies(
+CREATE TABLE IF NOT EXISTS apply_jobs(
     id bigserial,
     user_id bigint NOT NULL,
     job_id bigint NOT NULL,
@@ -42,7 +43,7 @@ VALUES
 ('Alice', 'Job Researcher', 18,'alice@gmail.com' 'no hash', NOW(), NOW()),
 ('Bob', 'Job Researcher', 18,'bob@gmail.com', 'no hash', NOW(), NOW());
 
-INSERT INTO jobs(name, company, quota, created_at, updated_at)
+INSERT INTO jobs(name, company, quota, expired_at, created_at, updated_at)
 VALUES
-('Backend Developer', 'Shopee', 2, NOW(), NOW()),
-('Frontend Developer', 'Shopee', 2, NOW(), NOW());
+('Backend Developer', 'Shopee', 2,'2024-01-01', NOW(), NOW()),
+('Frontend Developer', 'Shopee', 2,'2024-01-01' , NOW(), NOW());
