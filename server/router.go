@@ -8,9 +8,9 @@ import (
 )
 
 type RouterOpts struct {
-	JobHandler     *handler.JobHandler
-	UserHandler    *handler.UserHandler
-	ApplyJobHanler *handler.ApplyJobHanler
+	JobHandler      *handler.JobHandler
+	UserHandler     *handler.UserHandler
+	ApplyJobHandler *handler.ApplyJobHandler
 }
 
 func NewRouter(opts RouterOpts) *gin.Engine {
@@ -35,7 +35,7 @@ func NewRouter(opts RouterOpts) *gin.Engine {
 	users.POST("/login", opts.UserHandler.HandleUserLogin)
 
 	applyjobs := router.Group("/applyjobs")
-	applyjobs.GET("", opts.ApplyJobHanler.HandleGetAllRecords)
-	applyjobs.POST("", opts.ApplyJobHanler.HandleCreateApplyJob)
+	applyjobs.GET("", opts.ApplyJobHandler.HandleGetAllRecords)
+	applyjobs.POST("", opts.ApplyJobHandler.HandleCreateApplyJob)
 	return router
 }

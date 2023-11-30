@@ -38,9 +38,9 @@ func main() {
 	ah := handler.NewApplyJobHandler(au)
 
 	opts := server.RouterOpts{
-		JobHandler:     jh,
-		UserHandler:    uh,
-		ApplyJobHanler: ah,
+		JobHandler:      jh,
+		UserHandler:     uh,
+		ApplyJobHandler: ah,
 	}
 	r := server.NewRouter(opts)
 

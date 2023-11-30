@@ -9,17 +9,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ApplyJobHanler struct {
+type ApplyJobHandler struct {
 	applyJobUsecase usecase.ApplyJobUsecase
 }
 
-func NewApplyJobHandler(au usecase.ApplyJobUsecase) *ApplyJobHanler {
-	return &ApplyJobHanler{
+func NewApplyJobHandler(au usecase.ApplyJobUsecase) *ApplyJobHandler {
+	return &ApplyJobHandler{
 		applyJobUsecase: au,
 	}
 }
 
-func (h *ApplyJobHanler) HandleGetAllRecords(ctx *gin.Context) {
+func (h *ApplyJobHandler) HandleGetAllRecords(ctx *gin.Context) {
 	resp := dto.Response{}
 	records, err := h.applyJobUsecase.GetAllRecords(ctx)
 	if err != nil {
@@ -30,7 +30,7 @@ func (h *ApplyJobHanler) HandleGetAllRecords(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, resp)
 }
 
-func (h *ApplyJobHanler) HandleCreateApplyJob(ctx *gin.Context) {
+func (h *ApplyJobHandler) HandleCreateApplyJob(ctx *gin.Context) {
 	resp := dto.Response{}
 	newApplyJob := dto.ApplyJobReq{}
 	err := ctx.ShouldBindJSON(&newApplyJob)
