@@ -55,9 +55,12 @@ func (j *jobRepository) NewJob(ctx context.Context, job model.Job) (newJob *mode
 }
 
 func (j *jobRepository) SetJobExpireDate(ctx context.Context, job model.Job) (updatedJob *model.Job, err error) {
-	err = j.db.WithContext(ctx).Table("jobs").Where("id = ?", job.ID).Update("expired_at", job.ExpireAt).Scan(&updatedJob).Error
-	if err != nil {
+	result := j.db.WithContext(ctx).Table("jobs").Where("id = ?", job.ID).Update("expired_at", job.ExpireAt).Scan(&updatedJob)
+	if result.Error != nil {
 		return nil, apperror.ErrNewUserQuery
+	}
+	if result.RowsAffected == 0 {
+		return nil, apperror.ErrJobNotFound
 	}
 	return updatedJob, nil
 }

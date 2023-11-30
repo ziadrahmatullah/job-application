@@ -13,7 +13,7 @@ import (
 type UserUsecase interface {
 	GetAllUsers(context.Context) ([]model.User, error)
 	CreateUser(context.Context, dto.RegisterReq) (*dto.RegisterRes, error)
-	// UserLogin(context.Context, dto.LoginReq) (*dto.LoginRes, error)
+	UserLogin(context.Context, dto.LoginReq) (*dto.LoginRes, error)
 }
 
 type userUsecase struct {
