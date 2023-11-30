@@ -7,4 +7,6 @@ type User struct {
 	Name       string `gorm:"not null"`
 	CurrentJob string `gorm:"not null"`
 	Age        int    `gorm:"not null"`
+	Email      string `gorm:"not null"`
+	Password   string `gorm:"not null"`
 }
