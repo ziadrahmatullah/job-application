@@ -35,10 +35,7 @@ func (u *userUsecase) CreateUser(ctx context.Context, registerData dto.RegisterR
 	if user != nil {
 		return nil, apperror.ErrEmailALreadyUsed
 	}
-	hashPassword, err := bcrypt.GenerateFromPassword([]byte(registerData.Password), 10)
-	if err != nil {
-		return nil, apperror.ErrGenerateHashPassword
-	}
+	hashPassword, _ := bcrypt.GenerateFromPassword([]byte(registerData.Password), 10)
 	userModel := registerData.ToUserModelRegister(string(hashPassword))
 	newUser, err := u.userRepository.NewUser(ctx, userModel)
 	if err != nil {
