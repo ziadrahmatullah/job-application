@@ -7,6 +7,7 @@ import (
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/apperror"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/dto"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/model"
+	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/util"
 	"gorm.io/gorm"
 )
 
@@ -56,7 +57,8 @@ func (j *jobRepository) NewJob(ctx context.Context, job model.Job) (newJob *mode
 }
 
 func (j *jobRepository) SetJobExpireDate(ctx context.Context, job dto.UpdateJobReq) (updatedJob *model.Job, err error) {
-	result := j.db.WithContext(ctx).Table("jobs").Where("id = ?", job.ID).Update("expired_at", job.ExpiredAt).Scan(&updatedJob)
+	expiredAt := util.ToDate(job.ExpiredAt)
+	result := j.db.WithContext(ctx).Table("jobs").Where("id = ?", job.ID).Update("expired_at", expiredAt).Scan(&updatedJob)
 	if result.Error != nil {
 		return nil, apperror.ErrNewUserQuery
 	}

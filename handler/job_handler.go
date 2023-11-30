@@ -20,9 +20,8 @@ func NewJobHandler(ju usecase.JobUsecase) *JobHandler {
 	}
 }
 
-func (h *JobHandler) HandleGetJobs(ctx *gin.Context) {
+func (h *JobHandler) HandleGetAllJobs(ctx *gin.Context) {
 	resp := dto.Response{}
-	var jobs []model.Job
 	jobs, err := h.jobUsecase.GetAllJobs(ctx)
 	if err != nil {
 		ctx.Error(err)

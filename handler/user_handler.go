@@ -5,7 +5,6 @@ import (
 
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/apperror"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/dto"
-	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/model"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/usecase"
 	"github.com/gin-gonic/gin"
 )
@@ -22,7 +21,6 @@ func NewUserHandler(uu usecase.UserUsecase) *UserHandler {
 
 func (h *UserHandler) HandleGetUsers(ctx *gin.Context) {
 	resp := dto.Response{}
-	var users []model.User
 	users, err := h.userUsecase.GetAllUsers(ctx)
 	if err != nil {
 		ctx.Error(err)
