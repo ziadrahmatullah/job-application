@@ -59,5 +59,6 @@ var (
 
 	ErrTxCommit = NewCustomError(http.StatusInternalServerError, "commit transaction error")
 
-	ErrInvalidBody = NewCustomError(http.StatusBadRequest, "invalid body")
+	ErrInvalidBody  = NewCustomError(http.StatusBadRequest, "invalid body")
+	ErrUnauthorize = NewCustomError(http.StatusUnauthorized, "unauthorized")
 )
