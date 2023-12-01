@@ -21,6 +21,13 @@ var users = []model.User{
 		CurrentJob: "Freelancer",
 		Age:        19,
 	},
+	{
+		Name:       "Alice",
+		Email:      "alice@gmail.com",
+		CurrentJob: "Freelancer",
+		Age:        19,
+		Password:   "$2y$12$6jbGWUrwIZquydHg8t1qJOovhmR0f.4u95xN45wLUW24jlFr7q6AG",
+	},
 }
 
 var registerReq = []dto.RegisterReq{
@@ -55,12 +62,6 @@ var loginReq = []dto.LoginReq{
 	},
 	{
 		Email: "alice@gmail.com",
-	},
-}
-
-var loginRes = []dto.LoginRes{
-	{
-		AccessToken: "example",
 	},
 }
 
@@ -128,37 +129,35 @@ func TestLoginUser(t *testing.T) {
 		uu := usecase.NewUserUsecase(ur)
 		rec := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rec)
-		ur.On("FindByEmail", c, mock.Anything).Return(nil,expectedErr)
+		ur.On("FindByEmail", c, mock.Anything).Return(nil, expectedErr)
 
 		_, err := uu.UserLogin(c, loginReq[0])
 
 		assert.ErrorIs(t, err, expectedErr)
 	})
 
-	// t.Run("should return registerRes if success", func(t *testing.T) {
-	// 	ur := mocks.NewUserRepository(t)
-	// 	uu := usecase.NewUserUsecase(ur)
-	// 	rec := httptest.NewRecorder()
-	// 	c, _ := gin.CreateTestContext(rec)
-	// 	ur.On("FindByEmail", c, mock.Anything).Return(users[0], nil)
-	// 	expected := loginRes[0]
+	t.Run("should return token if success", func(t *testing.T) {
+		ur := mocks.NewUserRepository(t)
+		uu := usecase.NewUserUsecase(ur)
+		rec := httptest.NewRecorder()
+		c, _ := gin.CreateTestContext(rec)
+		ur.On("FindByEmail", c, mock.Anything).Return(&users[1], nil)
 
-	// 	resUser, _ := uu.UserLogin(c, loginReq[0])
+		token, _ := uu.UserLogin(c, loginReq[0])
 
-	// 	assert.Equal(t, expected, resUser)
-	// })
+		assert.NotNil(t, token)
+	})
 
-	// t.Run("should return err if db error", func(t *testing.T) {
-	// 	expectedErr := apperror.ErrNewUserQuery
-	// 	ur := mocks.NewUserRepository(t)
-	// 	uu := usecase.NewUserUsecase(ur)
-	// 	rec := httptest.NewRecorder()
-	// 	c, _ := gin.CreateTestContext(rec)
-	// 	ur.On("FindByEmail", c, mock.Anything).Return(nil, nil)
-	// 	ur.On("NewUser", c, mock.Anything).Return(nil, expectedErr)
+	t.Run("should return invalid password error", func(t *testing.T) {
+		expectedErr := apperror.ErrInvalidPasswordOrEmail
+		ur := mocks.NewUserRepository(t)
+		uu := usecase.NewUserUsecase(ur)
+		rec := httptest.NewRecorder()
+		c, _ := gin.CreateTestContext(rec)
+		ur.On("FindByEmail", c, mock.Anything).Return(&users[0], nil)
 
-	// 	_, err := uu.CreateUser(c, registerReq[0])
+		_, err := uu.UserLogin(c, loginReq[0])
 
-	// 	assert.ErrorIs(t, err, expectedErr)
-	// })
+		assert.ErrorIs(t, err, expectedErr)
+	})
 }
