@@ -3,11 +3,11 @@ package dto
 import "git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/model"
 
 type RegisterReq struct {
-	Name       string `binding:"required" json:"name"`
-	CurrentJob string `binding:"required" json:"current_job"`
-	Age        int    `binding:"required,min=17" json:"age"`
-	Email      string `binding:"required" json:"email"`
-	Password   string `binding:"required" json:"password"`
+	Name       string `binding:"required" json:"name" validate:"required"`
+	CurrentJob string `binding:"required" json:"current_job" validate:"required"`
+	Age        int    `binding:"required,min=17" json:"age" validate:"required"`
+	Email      string `binding:"required" json:"email" validate:"required"`
+	Password   string `binding:"required" json:"password" validate:"required"` 
 }
 
 type RegisterRes struct {
@@ -19,8 +19,8 @@ type RegisterRes struct {
 }
 
 type LoginReq struct {
-	Email    string `binding:"required" json:"email"`
-	Password string `binding:"required" json:"password"`
+	Email    string `binding:"required,email" json:"email" validate:"required,email"`
+	Password string `binding:"required" json:"password" validate:"required"`
 }
 
 type LoginRes struct {

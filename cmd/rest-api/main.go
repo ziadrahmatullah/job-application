@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/database"
-	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/handler"
+	restapihandler "git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/handler/rest_api_handler"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/repository"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/server"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/usecase"
@@ -27,15 +27,15 @@ func main() {
 	addr := os.Getenv("APP_PORT")
 	jr := repository.NewJobRepository(db)
 	ju := usecase.NewJobUsecase(jr)
-	jh := handler.NewJobHandler(ju)
+	jh := restapihandler.NewJobHandler(ju)
 
 	ur := repository.NewUserRepository(db)
 	uu := usecase.NewUserUsecase(ur)
-	uh := handler.NewUserHandler(uu)
+	uh := restapihandler.NewUserHandler(uu)
 
 	ar := repository.NewApplyJobRepository(db)
 	au := usecase.NewApplyJobUsecase(ar, ur, jr)
-	ah := handler.NewApplyJobHandler(au)
+	ah := restapihandler.NewApplyJobHandler(au)
 
 	opts := server.RouterOpts{
 		JobHandler:      jh,
@@ -54,18 +54,11 @@ func main() {
 			log.Printf("listen: %s\n", err)
 		}
 	}()
-	// Wait forloggerwithconfig interrupt signal to gracefully shutdown the server with
-	// a timeout of 5 seconds.
 	quit := make(chan os.Signal)
-	// kill (no param) default send syscall.SIGTERM
-	// kill -2 is syscall.SIGINT
-	// kill -9 is syscall.SIGKILL but can't be caught, so don't need to add it
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	log.Println("Shutting down server...")
 
-	// The context is used to inform the server it has 5 seconds to finish
-	// the request it is currently handling
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

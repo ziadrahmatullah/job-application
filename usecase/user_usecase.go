@@ -54,7 +54,7 @@ func (u *userUsecase) UserLogin(ctx context.Context, loginData dto.LoginReq) (to
 	if err != nil {
 		return nil, apperror.ErrInvalidPasswordOrEmail
 	}
-	newToken,_ := dto.GenerateJWT(dto.JwtClaims{
+	newToken, _ := dto.GenerateJWT(dto.JwtClaims{
 		ID: user.ID,
 	})
 	return &dto.LoginRes{AccessToken: newToken}, nil

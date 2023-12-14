@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package job;
+
+option go_package = "./pb";
+import "google/protobuf/timestamp.proto";
+
+message CreateJobReq{
+    string name = 1;
+    string company = 2;
+    int32 quota = 3;
+    google.protobuf.Timestamp expired_at = 4;
+}
+
+message UpdateJobReq{
+    uint32 id = 1;
+    google.protobuf.Timestamp expired_at = 2;
+}
+
+message DeleteJobReq{
+    uint32 id = 1;
+}
+
+message JobRes{
+    uint32 id = 1;
+    google.protobuf.Timestamp created_at = 2;
+    google.protobuf.Timestamp updated_at = 3;
+    google.protobuf.Timestamp deleted_at = 4;
+    string name = 5;
+    string company = 6;
+    int32 quota = 7;
+    google.protobuf.Timestamp expired_at = 8;
+}
+
+message DeleteJobRes{
+    string message = 1;
+}
+
+message GetJobsReq{}
+
+message GetJobsRes{
+    repeated JobRes jobs = 1;
+}
+
+service JobService{
+    rpc GetAllJobs(GetJobsReq) returns (GetJobsRes);
+    rpc CreateJob(CreateJobReq) returns(JobRes);
+    rpc UpdateJob(UpdateJobReq) returns(JobRes);
+    rpc DeleteJob(DeleteJobReq) returns(DeleteJobRes);
+}

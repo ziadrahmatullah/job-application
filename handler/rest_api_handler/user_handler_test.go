@@ -1,4 +1,4 @@
-package handler_test
+package restapihandler_test
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/apperror"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/dto"
-	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/handler"
+	restapihandler "git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/handler/rest_api_handler"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/mocks"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/model"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/server"
@@ -75,7 +75,7 @@ func TestHandleGetUsers(t *testing.T) {
 			Data: users,
 		})
 		uu := mocks.NewUserUsecase(t)
-		uh := handler.NewUserHandler(uu)
+		uh := restapihandler.NewUserHandler(uu)
 		rec := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rec)
 		c.Request, _ = http.NewRequest(http.MethodGet, "/users", nil)
@@ -92,7 +92,7 @@ func TestHandleGetUsers(t *testing.T) {
 			Data: make([]model.User, 0),
 		})
 		uu := mocks.NewUserUsecase(t)
-		uh := handler.NewUserHandler(uu)
+		uh := restapihandler.NewUserHandler(uu)
 		rec := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rec)
 		c.Request, _ = http.NewRequest(http.MethodGet, "/users", nil)
@@ -108,7 +108,7 @@ func TestHandleGetUsers(t *testing.T) {
 		expectedErr := apperror.NewCustomError(http.StatusInternalServerError, "db error")
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		uu := mocks.NewUserUsecase(t)
-		uh := handler.NewUserHandler(uu)
+		uh := restapihandler.NewUserHandler(uu)
 		uu.On("GetAllUsers", mock.Anything).Return(nil, expectedErr)
 		opts := server.RouterOpts{
 			UserHandler: uh,
@@ -131,7 +131,7 @@ func TestHandleUserRegister(t *testing.T) {
 		})
 		param, _ := json.Marshal(registerReq[0])
 		uu := mocks.NewUserUsecase(t)
-		uh := handler.NewUserHandler(uu)
+		uh := restapihandler.NewUserHandler(uu)
 		rec := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rec)
 		c.Request, _ = http.NewRequest(http.MethodPost, "/users/register", strings.NewReader(string(param)))
@@ -147,7 +147,7 @@ func TestHandleUserRegister(t *testing.T) {
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		param, _ := json.Marshal(registerReq[1])
 		uu := mocks.NewUserUsecase(t)
-		uh := handler.NewUserHandler(uu)
+		uh := restapihandler.NewUserHandler(uu)
 		opts := server.RouterOpts{
 			UserHandler: uh,
 		}
@@ -166,7 +166,7 @@ func TestHandleUserRegister(t *testing.T) {
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		param, _ := json.Marshal(registerReq[0])
 		uu := mocks.NewUserUsecase(t)
-		uh := handler.NewUserHandler(uu)
+		uh := restapihandler.NewUserHandler(uu)
 		uu.On("CreateUser", mock.Anything, registerReq[0]).Return(nil, expectedErr)
 		opts := server.RouterOpts{
 			UserHandler: uh,
@@ -187,7 +187,7 @@ func TestHandleUserLogin(t *testing.T) {
 		expectedResp, _ := json.Marshal(loginRes[0])
 		param, _ := json.Marshal(loginReq[0])
 		uu := mocks.NewUserUsecase(t)
-		uh := handler.NewUserHandler(uu)
+		uh := restapihandler.NewUserHandler(uu)
 		rec := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rec)
 		c.Request, _ = http.NewRequest(http.MethodPost, "/users/login", strings.NewReader(string(param)))
@@ -203,7 +203,7 @@ func TestHandleUserLogin(t *testing.T) {
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		param, _ := json.Marshal(loginReq[1])
 		uu := mocks.NewUserUsecase(t)
-		uh := handler.NewUserHandler(uu)
+		uh := restapihandler.NewUserHandler(uu)
 		opts := server.RouterOpts{
 			UserHandler: uh,
 		}
@@ -222,7 +222,7 @@ func TestHandleUserLogin(t *testing.T) {
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		param, _ := json.Marshal(loginReq[0])
 		uu := mocks.NewUserUsecase(t)
-		uh := handler.NewUserHandler(uu)
+		uh := restapihandler.NewUserHandler(uu)
 		uu.On("UserLogin", mock.Anything, loginReq[0]).Return(nil, expectedErr)
 		opts := server.RouterOpts{
 			UserHandler: uh,

@@ -6,19 +6,19 @@ import (
 )
 
 type CreateJobReq struct {
-	Name      string `binding:"required" json:"name"`
-	Company   string `binding:"required" json:"company"`
-	Quota     int    `binding:"required,min=1" json:"quota"`
-	ExpiredAt string `binding:"required" json:"expired_at"`
+	Name      string `binding:"required" json:"name" validate:"required"`
+	Company   string `binding:"required" json:"company" validate:"required"`
+	Quota     int    `binding:"required,min=1" json:"quota" validate:"required"`
+	ExpiredAt string `binding:"required" json:"expired_at" validate:"required"`
 }
 
 type UpdateJobReq struct {
-	ID        uint   `binding:"required" json:"id"`
-	ExpiredAt string `binding:"required" json:"expired_at"`
+	ID        uint   `binding:"required" json:"id" validate:"required"`
+	ExpiredAt string `binding:"required" json:"expired_at" validate:"required"`
 }
 
 type DeleteJobReq struct {
-	ID uint `binding:"required" json:"id"`
+	ID uint `binding:"required" json:"id" validate:"required"`
 }
 
 func (r *CreateJobReq) ToJobModel() model.Job {

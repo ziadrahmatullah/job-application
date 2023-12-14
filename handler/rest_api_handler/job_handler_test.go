@@ -1,4 +1,4 @@
-package handler_test
+package restapihandler_test
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/apperror"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/dto"
-	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/handler"
+	restapihandler "git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/handler/rest_api_handler"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/mocks"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/model"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/server"
@@ -56,7 +56,7 @@ func TestHandleGetAllJobs(t *testing.T) {
 			Data: jobs,
 		})
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		rec := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rec)
 		c.Request, _ = http.NewRequest(http.MethodGet, "/jobs", nil)
@@ -72,7 +72,7 @@ func TestHandleGetAllJobs(t *testing.T) {
 		expectedErr := apperror.NewCustomError(http.StatusInternalServerError, "db error")
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		ju.On("GetAllJobs", mock.Anything).Return(nil, expectedErr)
 		opts := server.RouterOpts{
 			JobHandler: jh,
@@ -95,7 +95,7 @@ func TestHandleCreateJob(t *testing.T) {
 		})
 		param, _ := json.Marshal(jobCreateReq)
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		rec := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rec)
 		c.Request, _ = http.NewRequest(http.MethodPost, "/jobs", strings.NewReader(string(param)))
@@ -113,7 +113,7 @@ func TestHandleCreateJob(t *testing.T) {
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		param, _ := json.Marshal(invJobCreateReq)
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		opts := server.RouterOpts{
 			JobHandler: jh,
 		}
@@ -132,7 +132,7 @@ func TestHandleCreateJob(t *testing.T) {
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		param, _ := json.Marshal(jobCreateReq)
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		ju.On("CreateJob", mock.Anything, jobCreateReq.ToJobModel()).Return(nil, expectedErr)
 		opts := server.RouterOpts{
 			JobHandler: jh,
@@ -155,7 +155,7 @@ func TestHandleUpdateJob(t *testing.T) {
 		})
 		param, _ := json.Marshal(jobUpdateReq)
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		rec := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rec)
 		c.Request, _ = http.NewRequest(http.MethodPut, "/jobs", strings.NewReader(string(param)))
@@ -173,7 +173,7 @@ func TestHandleUpdateJob(t *testing.T) {
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		param, _ := json.Marshal(invJobCreateReq)
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		opts := server.RouterOpts{
 			JobHandler: jh,
 		}
@@ -192,7 +192,7 @@ func TestHandleUpdateJob(t *testing.T) {
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		param, _ := json.Marshal(jobUpdateReq)
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		ju.On("UpdateJobExpireDate", mock.Anything, jobUpdateReq).Return(nil, expectedErr)
 		opts := server.RouterOpts{
 			JobHandler: jh,
@@ -215,7 +215,7 @@ func TestHandleDeleteJob(t *testing.T) {
 		})
 		param, _ := json.Marshal(jobDeleteReq)
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		rec := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rec)
 		c.Request, _ = http.NewRequest(http.MethodDelete, "/jobs", strings.NewReader(string(param)))
@@ -233,7 +233,7 @@ func TestHandleDeleteJob(t *testing.T) {
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		param, _ := json.Marshal(invJobCreateReq)
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		opts := server.RouterOpts{
 			JobHandler: jh,
 		}
@@ -252,7 +252,7 @@ func TestHandleDeleteJob(t *testing.T) {
 		resBody, _ := json.Marshal(expectedErr.ToErrorRes())
 		param, _ := json.Marshal(jobDeleteReq)
 		ju := mocks.NewJobUsecase(t)
-		jh := handler.NewJobHandler(ju)
+		jh := restapihandler.NewJobHandler(ju)
 		ju.On("DeleteJob", mock.Anything, jobDeleteReq).Return(expectedErr)
 		opts := server.RouterOpts{
 			JobHandler: jh,

@@ -1,16 +1,16 @@
 package server
 
 import (
-	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/handler"
+	restapihandler "git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/handler/rest_api_handler"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/logger"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 type RouterOpts struct {
-	JobHandler      *handler.JobHandler
-	UserHandler     *handler.UserHandler
-	ApplyJobHandler *handler.ApplyJobHandler
+	JobHandler      *restapihandler.JobHandler
+	UserHandler     *restapihandler.UserHandler
+	ApplyJobHandler *restapihandler.ApplyJobHandler
 }
 
 func NewRouter(opts RouterOpts) *gin.Engine {
@@ -34,7 +34,7 @@ func NewRouter(opts RouterOpts) *gin.Engine {
 	users.POST("/register", opts.UserHandler.HandleUserRegister)
 	users.POST("/login", opts.UserHandler.HandleUserLogin)
 
-	applyjobs := router.Group("/applyjobs")
+	applyjobs := router.Group("/apply-jobs")
 	applyjobs.GET("", opts.ApplyJobHandler.HandleGetAllRecords)
 	applyjobs.POST("", opts.ApplyJobHandler.HandleCreateApplyJob)
 	return router
