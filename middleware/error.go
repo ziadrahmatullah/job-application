@@ -8,6 +8,9 @@ import (
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/apperror"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/dto"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func ErrorHandler() gin.HandlerFunc {
@@ -30,4 +33,21 @@ func ErrorHandler() gin.HandlerFunc {
 			}
 		}
 	}
+}
+
+func ErrorInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+	res, err := handler(ctx, req)
+	if err != nil {
+		if errors.Is(err, context.DeadlineExceeded) {
+			return nil, status.Error(codes.DeadlineExceeded, err.Error())
+		}
+		switch e := err.(type) {
+		case *apperror.CustomError:
+			return nil, e.ToGrpcError()
+		default:
+			return nil, status.Error(codes.Internal, err.Error())
+		}
+	}
+
+	return res, nil
 }

@@ -7,7 +7,7 @@ import (
 )
 
 type ApplyJobReq struct {
-	JobId uint `binding:"required" json:"job_id"`
+	JobId uint `binding:"required" json:"job_id" validate:"required"`
 }
 
 func (r *ApplyJobReq) ToApplyJobModel(uid uint) model.ApplyJob {

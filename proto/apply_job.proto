@@ -20,7 +20,7 @@ message RecordsReq{
 
 }
 
-message RecordsRes{
+message Record{
     uint32 id = 1;
     google.protobuf.Timestamp created_at = 2;
     google.protobuf.Timestamp updated_at = 3;
@@ -28,6 +28,10 @@ message RecordsRes{
     uint32 user_id = 5;
     uint32 job_id = 6;
     google.protobuf.Timestamp applied_at = 7;
+}
+
+message RecordsRes{
+    repeated Record records = 1;
 }
 
 service ApplyJobService{

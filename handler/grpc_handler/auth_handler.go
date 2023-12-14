@@ -11,6 +11,7 @@ import (
 )
 
 type AuthGRPCHandler struct {
+	pb.UnimplementedAuthServiceServer
 	usecase   usecase.UserUsecase
 	validator appvalidator.AppValidator
 }
