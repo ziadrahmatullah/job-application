@@ -1,12 +1,12 @@
 package main
 
 import (
+	"log"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/rs/zerolog/log"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/appvalidator"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/database"
 	grpchandler "git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/handler/grpc_handler"
@@ -14,10 +14,14 @@ import (
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/pb"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/repository"
 	"git.garena.com/sea-labs-id/bootcamp/batch-02/ziad-rahmatullah/job-application/usecase"
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("no env got")
+	}
 	db := database.ConnectDB()
 	validator := appvalidator.NewAppValidatorImpl()
 	appvalidator.SetValidator(validator)
@@ -36,7 +40,7 @@ func main() {
 
 	list, err := net.Listen("tcp", ":50051")
 	if err != nil {
-		log.Fatal().Err(err).Msg("error starting tcp server")
+		log.Println("error starting tcp server")
 	}
 
 	server := grpc.NewServer(grpc.ChainUnaryInterceptor(
@@ -49,7 +53,7 @@ func main() {
 	pb.RegisterJobServiceServer(server, jh)
 	pb.RegisterApplyJobServiceServer(server, ah)
 
-	log.Info().Msg("starting grpc server")
+	log.Println("starting grpc server")
 
 	signCh := make(chan os.Signal, 1)
 	signal.Notify(signCh, os.Interrupt, syscall.SIGTERM)
@@ -59,7 +63,7 @@ func main() {
 			signCh <- syscall.SIGINT
 		}
 	}()
-	log.Info().Msg("server started")
+	log.Println("server started")
 	<-signCh
-	log.Info().Msg("server stopped")
+	log.Println("server stopped")
 }

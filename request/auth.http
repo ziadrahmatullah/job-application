@@ -1,0 +1,19 @@
+proto < ../proto/auth.proto
+@host=localhost:50051
+
+### Success
+GRPC /AuthService/Register
+{
+    "name":"Felix",
+    "currentJob": "Job Researcher",
+    "age": 18,
+    "email":"felix@gmail.com",
+    "password":"felix123"
+}
+
+### Success
+GRPC /AuthService/Login
+{
+    "email":"felix@gmail.com",
+    "password": "felix123"
+}

@@ -53,7 +53,7 @@ func (h *JobGRPCHandler) CreateJob(ctx context.Context, req *pb.CreateJobReq) (*
 		Name:      req.Name,
 		Company:   req.Company,
 		Quota:     int(req.Quota),
-		ExpiredAt: req.ExpiredAt.AsTime().Format("2006-01-02"),
+		ExpiredAt: req.ExpiredAt,
 	}
 	err := h.validator.Validate(jobReq)
 	if err != nil {
@@ -82,7 +82,7 @@ func (h *JobGRPCHandler) CreateJob(ctx context.Context, req *pb.CreateJobReq) (*
 func (h *JobGRPCHandler) UpdateJob(ctx context.Context, req *pb.UpdateJobReq) (*pb.JobRes, error) {
 	jobReq := dto.UpdateJobReq{
 		ID:        uint(req.Id),
-		ExpiredAt: req.ExpiredAt.AsTime().Format("2006-01-02"),
+		ExpiredAt: req.ExpiredAt,
 	}
 	err := h.validator.Validate(jobReq)
 	if err != nil {

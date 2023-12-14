@@ -1,0 +1,23 @@
+proto < ../proto/apply_job.proto
+@host=localhost:50051
+{{+
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDI1NDc0OTksImlhdCI6MTcwMjU0Mzg5OX0.VLM4wsKRrYGVAsDlvNWqv_VrP9gVMvHK1VYZI0h2Www"
+  exports.defaultHeaders = {
+    'Content-Type': 'text/html',
+    'Authorization': `Bearer ${token}`
+  };
+}}
+
+### GetAllRecords Success
+GRPC /ApplyJobService/GetAllRecords
+...defaultHeaders
+{
+
+}
+
+### ApplyJob Success
+GRPC /ApplyJobService/ApplyJob
+...defaultHeaders
+{
+    "jobId": 2
+}

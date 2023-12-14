@@ -1,0 +1,39 @@
+proto < ../proto/job.proto
+@host=localhost:50051
+{{+
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDI1NDc0OTksImlhdCI6MTcwMjU0Mzg5OX0.VLM4wsKRrYGVAsDlvNWqv_VrP9gVMvHK1VYZI0h2Www"
+  exports.defaultHeaders = {
+    'Content-Type': 'text/html',
+    'Authorization': `Bearer ${token}`
+  };
+}}
+### GetAllJobs Success
+GRPC /JobService/GetAllJobs
+...defaultHeaders
+{
+
+}
+
+### CreateJob Success
+GRPC /JobService/CreateJob
+...defaultHeaders
+{
+    "name":"Flutter_Developer",
+    "company": "Shopee",
+    "quota": 3,
+    "expiredAt": "2024-01-01"
+}
+
+### UpdateJob Success
+GRPC /JobService/UpdateJob
+...defaultHeaders
+{
+    "id":13,
+    "expiredAt":"2025-01-01"
+}
+### DeleteJob Success
+GRPC /JobService/DeleteJob
+...defaultHeaders
+{
+    "id":14
+}
